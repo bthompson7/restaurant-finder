@@ -46,7 +46,7 @@ if(navigator.geolocation) {
             
             $.ajax({
                 type: "POST",
-                url: "localhost:5000/postmethod",
+                url: "http://localhost:5000/postmethod",
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
