@@ -28,9 +28,10 @@ DEFAULT_TERM = 'dinner'
 DEFAULT_LOCATION = 'Gorham, ME'
 SEARCH_LIMIT = 3
 
-class YELP:
+class Yelp:
     def __init__(self):
         pass
+
     '''
     calls the yelp api 
     '''

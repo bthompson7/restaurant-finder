@@ -13,7 +13,9 @@ Requirements:
 '''
 
 import time,os
-from apicall import YELP
+from apicall import Yelp
+from restaurant import Resaurant
+from parse import Parse
 from flask import Flask,render_template, jsonify,request
 from twisted.internet import reactor
 from twisted.web.proxy import ReverseProxyResource
@@ -28,7 +30,7 @@ API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJc
 
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
-    api = YELP
+    api = Yelp
     print(api.search_api(API_KEY,'lunch',"Gorham,ME"))
     return render_template('index.html')
 
