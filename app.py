@@ -12,7 +12,7 @@ Requirements:
 
 '''
 
-import time,os
+import time,os,json
 from apicall import Yelp
 from restaurant import Resaurant
 from parse import Parse
@@ -33,17 +33,25 @@ def geo():
     api = Yelp
     lat = 43.726585899999996
     lng = -70.46454059999999
-    '''
-lat': 43.726585899999996, 'lng': -70.46454059999999
-    '''
-    print(api.search_api(API_KEY,'lunch',lat,lng))
+
+    dataFromApi = api.search(API_KEY,'dinner',lat,lng)
+    json.dumps(dataFromApi)
+    print("Nearby Resaurants: ")
+    for nearby_restaurant in dataFromApi['businesses']:
+        print(nearby_restaurant['name'])
+        print(nearby_restaurant['coordinates'])
+        
     return render_template('index.html')
 
+
+'''
+called by index.html
+'''
 @app.route('/postmethod', methods=['GET','POST'])
 def postmethod():
     data = request.get_json()
     print("postmethod called")
-    print(data)
+    #print(data)
     return jsonify(data)
 
 

@@ -26,7 +26,7 @@ BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 DEFAULT_TERM = 'dinner'
 DEFAULT_LOCATION = 'Gorham, ME'
-SEARCH_LIMIT = 10 #for now limit it to 3
+SEARCH_LIMIT = 10
 
 class Yelp:
     def __init__(self):
@@ -35,7 +35,7 @@ class Yelp:
     '''
     calls the yelp api 
     '''
-    def search_api(api_key,term,lat,lng):
+    def search(api_key,term,lat,lng):
         data = "api call!"
         url_params = {
            'term': term.replace(' ', '+'),
