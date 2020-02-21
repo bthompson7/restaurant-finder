@@ -31,7 +31,12 @@ API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJc
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
     api = Yelp
-    print(api.search_api(API_KEY,'lunch',"Gorham,ME"))
+    lat = 43.726585899999996
+    lng = -70.46454059999999
+    '''
+lat': 43.726585899999996, 'lng': -70.46454059999999
+    '''
+    print(api.search_api(API_KEY,'lunch',lat,lng))
     return render_template('index.html')
 
 @app.route('/postmethod', methods=['GET','POST'])
