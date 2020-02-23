@@ -46,7 +46,7 @@ if(navigator.geolocation) {
             
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5000/postmethod",
+                url: "http://localhost:5000/",
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -58,13 +58,9 @@ if(navigator.geolocation) {
                 }
             });
 
-    //test marker
-    var marker = new google.maps.Marker({
-      position: pos, 
-      map: map,
-      title: 'Hello World',
-      url: 'www.usm.maine.edu', 
-    });
+    //pass array of rest. objects
+    markMap(pos,map);
+
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -79,6 +75,18 @@ if(navigator.geolocation) {
         infoWindow.setContent(browserHasGeolocation ?
         'Error: The Geolocation service failed.' :
         'Error: Your browser doesn\'t support geolocation.');
+    }
+
+
+    //mark the map with restaurants
+    function markMap(pos,map){
+        var marker = new google.maps.Marker({
+           position: pos, 
+           map: map,
+           title: 'Hello World',
+           url: 'www.usm.maine.edu', 
+        });
+
     }
 
     </script>

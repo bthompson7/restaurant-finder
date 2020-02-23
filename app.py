@@ -31,16 +31,19 @@ API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJc
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
     api = Yelp
-    lat = 43.726585899999996
-    lng = -70.46454059999999
-
-    dataFromApi = api.search(API_KEY,'dinner',lat,lng)
-    json.dumps(dataFromApi)
-    print("Nearby Resaurants: ")
-    for nearby_restaurant in dataFromApi['businesses']:
-        print(nearby_restaurant['name'])
-        print(nearby_restaurant['coordinates'])
-        
+    data = request.get_json()
+    if data is not None:
+        jsonify(data)
+        print(data)
+        lat = data['location']['lat']
+        lng = data['location']['lng']
+        print("working")
+        dataFromApi = api.search(API_KEY,'dinner',lat,lng)
+        json.dumps(dataFromApi)
+        print("Nearby Resaurants: ")
+        for nearby_restaurant in dataFromApi['businesses']:
+            print(nearby_restaurant['name'])
+            print(nearby_restaurant['coordinates'])
     return render_template('index.html')
 
 
@@ -49,9 +52,10 @@ called by index.html
 '''
 @app.route('/postmethod', methods=['GET','POST'])
 def postmethod():
+    global data
     data = request.get_json()
     print("postmethod called")
-    #print(data)
+    print(data) #use this as lat/lng instead
     return jsonify(data)
 
 
