@@ -61,6 +61,7 @@ if(navigator.geolocation) {
     //pass array of rest. objects
     markMap(pos,map);
 
+
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -80,7 +81,8 @@ if(navigator.geolocation) {
 
     //mark the map with restaurants
     function markMap(pos,map){
-        var marker = new google.maps.Marker({
+        your_dictionary = {{ restList | tojson }}
+                var marker = new google.maps.Marker({
            position: pos, 
            map: map,
            title: 'Hello World',

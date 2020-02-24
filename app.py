@@ -15,7 +15,6 @@ Requirements:
 import time,os,json
 from apicall import Yelp
 from restaurant import Resaurant
-from parse import Parse
 from flask import Flask,render_template, jsonify,request
 from twisted.internet import reactor
 from twisted.web.proxy import ReverseProxyResource
@@ -28,11 +27,15 @@ app = Flask(__name__)
 app.debug = True
 API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJcHxFy_8eF8uRJxqPTXpnGeRH5Pl5UJAdNm-CykfdKW98Wpw-aOWEYr9NXnYx'
 
+isPlotted = False
+restList = []
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
+    global isPlotted
     api = Yelp
     data = request.get_json()
     if data is not None:
+        isPlotted = True
         jsonify(data)
         print(data)
         lat = data['location']['lat']
@@ -42,9 +45,16 @@ def geo():
         json.dumps(dataFromApi)
         print("Nearby Resaurants: ")
         for nearby_restaurant in dataFromApi['businesses']:
-            print(nearby_restaurant['name'])
-            print(nearby_restaurant['coordinates'])
-    return render_template('index.html')
+            restName = nearby_restaurant['name']
+            restLat = nearby_restaurant['coordinates']['latitude']
+            restLng = nearby_restaurant['coordinates']['longitude']
+            restObj = Resaurant(restName,restLat,restLng)
+            restList.append(restObj)
+            print(len(restList))
+    return render_template('index.html',restList=restList) 
+    '''
+https://stackoverflow.com/questions/15321431/how-to-pass-a-list-from-python-by-jinja2-to-javascript
+    '''
 
 
 '''
