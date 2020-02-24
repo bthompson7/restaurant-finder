@@ -29,8 +29,12 @@ API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJc
 
 isPlotted = False
 restList = []
+restList3 = None
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
+    someList = [1, 2, (3, 4)] # Note that the 3rd element is a tuple (3, 4)
+    someList2 = json.dumps(someList)
+    print(someList2) # '[1, 2, [3, 4]]'            print(python_data)
     global isPlotted
     api = Yelp
     data = request.get_json()
@@ -49,13 +53,16 @@ def geo():
             restLat = nearby_restaurant['coordinates']['latitude']
             restLng = nearby_restaurant['coordinates']['longitude']
             restObj = Resaurant(restName,restLat,restLng)
-            restList.append(restObj)
-            print(len(restList))
-    return render_template('index.html',restList=restList) 
-    '''
-https://stackoverflow.com/questions/15321431/how-to-pass-a-list-from-python-by-jinja2-to-javascript
-    '''
-
+            restList.append(restName)
+            #print(len(restList))
+            restList3 = json.dumps(restList)
+            #restList2 = map(json.dumps,restList)
+            #print(restList2)
+            #restList3.append(restList2)
+            #print(restList3)
+            restList3 = json.dumps(restList)
+    return render_template('index.html',data=restList)
+    
 
 '''
 called by index.html

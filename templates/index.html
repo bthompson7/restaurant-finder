@@ -71,6 +71,8 @@ if(navigator.geolocation) {
         }
     }
 
+   
+
     function handleLocationError(browserHasGeolocation, infoWindow, pos) {
         infoWindow.setPosition(pos);
         infoWindow.setContent(browserHasGeolocation ?
@@ -81,8 +83,10 @@ if(navigator.geolocation) {
 
     //mark the map with restaurants
     function markMap(pos,map){
-        your_dictionary = {{ restList | tojson }}
-                var marker = new google.maps.Marker({
+        var data2 = {{data|tojson}};
+        //alert(data2[2]);
+        console.log(data2)
+        var marker = new google.maps.Marker({
            position: pos, 
            map: map,
            title: 'Hello World',
