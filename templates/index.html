@@ -17,6 +17,7 @@ because you can't use geolocation over http anymore
 <body>
     <div id="map"></div>
     <script>
+        var rest;
 if(navigator.geolocation) {
       console.log("navigator.geolocation is available");
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -64,8 +65,22 @@ if(navigator.geolocation) {
                 contentType: "application/json",
                 dataType: "json",
                 success: function(response) {
-                    console.log("lol")
-                    console.log(response);
+                    rest = response
+                    for(var i = 0; i < 35; i++){
+                        /*
+                                    restLat = nearby_restaurant['coordinates']['latitude']
+            restLng = nearby_restaurant['coordinates']['longitude']
+                        */
+                       var restName = rest[i]['name'];
+                       var restLat = rest[i]['coordinates']['latitude'];
+                       var restLng = rest[i]['coordinates']['longitude'];
+                       pos = {
+                         lat: restLat,
+                         lng: restLng
+                        };
+                       markMap(restName,pos,map);
+                      //console.log(restName + " " + restLat + " " + restLng);
+                    }
                 },
                 error: function(err) {
                     console.log(err);
@@ -74,7 +89,9 @@ if(navigator.geolocation) {
 
 
     //pass array of rest. objects
-    markMap(pos,map);
+
+    var restTitle = "Your Location";
+    markMap(restTitle,pos,map);
 
 
             }, function() {
@@ -97,12 +114,12 @@ if(navigator.geolocation) {
 
 
     //mark the map with restaurants
-    function markMap(pos,map){
+    function markMap(restTitle,pos,map){
         console.log("kek");
         var marker = new google.maps.Marker({
            position: pos, 
            map: map,
-           title: 'Hello World',
+           title: restTitle,
            url: 'www.usm.maine.edu', 
         });
 
