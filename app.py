@@ -16,6 +16,7 @@ import time,os,json
 from apicall import Yelp
 from restaurant import Resaurant
 from flask import Flask,render_template, jsonify,request
+from flask import Response
 from twisted.internet import reactor
 from twisted.web.proxy import ReverseProxyResource
 from twisted.web.resource import Resource
@@ -61,7 +62,9 @@ def geo():
             #restList3.append(restList2)
             #print(restList3)
             restList3 = json.dumps(restList)
-    return render_template('index.html',data=restList)
+            #print(restList3)
+            print(len(restList))
+    return render_template('index.html')
     
 
 '''
@@ -73,8 +76,26 @@ def postmethod():
     data = request.get_json()
     print("postmethod called")
     print(data) #use this as lat/lng instead
-    return jsonify(data)
+    return data
 
+@app.route('/getdata', methods=['GET'])
+def getdata():
+    global data
+    someList = [1, 2, (3, 4)] # Note that the 3rd element is a tuple (3, 4)
+    someList2 = json.dumps(someList)
+    print("getdata called")
+    print(data) #use this as lat/lng instead
+    api = Yelp
+    lat = data['location']['lat']
+    lng = data['location']['lng']
+    #lat = 43.758081
+    #lng = -70.4648811
+    dataFromApi = api.search(API_KEY,'dinner',lat,lng)
+    json.dumps(dataFromApi)
+    #print("Nearby Resaurants: ")
+    for nearby_restaurant in dataFromApi['businesses']:
+            restList.append(nearby_restaurant)
+    return Response(json.dumps(restList),  mimetype='application/json')
 
 if __name__ == '__main__':
         app.run()
