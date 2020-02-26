@@ -18,6 +18,7 @@ because you can't use geolocation over http anymore
     <div id="map"></div>
     <script>
         var rest;
+        var listOfMarkers = [];
 if(navigator.geolocation) {
       console.log("navigator.geolocation is available");
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -66,19 +67,23 @@ if(navigator.geolocation) {
                 dataType: "json",
                 success: function(response) {
                     rest = response
-                    for(var i = 0; i < 35; i++){
-                        /*
-                                    restLat = nearby_restaurant['coordinates']['latitude']
-            restLng = nearby_restaurant['coordinates']['longitude']
-                        */
+                    print(rest[0]);
+                    for(var i = 0; i < 45; i++){
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
                        var restLng = rest[i]['coordinates']['longitude'];
+                       var restRating = rest[i]['rating'] + " stars with " + rest[i]['review_count'] + " reviews";
+                       var restLoc = rest[i]['location']['display_address'][0] + " " + rest[i]['location']['display_address'][1]
+                       var restPhone = rest[i]['display_phone'];
+                
+                       
+                       //var restReviewCount = rest[i]['review_count'];
+                       console.log(rest[i]);
                        pos = {
                          lat: restLat,
                          lng: restLng
                         };
-                       markMap(restName,pos,map);
+                       markMap(restName,restRating,restLoc,restPhone,pos,map);
                       //console.log(restName + " " + restLat + " " + restLng);
                     }
                 },
@@ -90,8 +95,7 @@ if(navigator.geolocation) {
 
     //pass array of rest. objects
 
-    var restTitle = "Your Location";
-    markMap(restTitle,pos,map);
+    markMap("Your Location","","","",pos,map);
 
 
             }, function() {
@@ -112,19 +116,28 @@ if(navigator.geolocation) {
         'Error: Your browser doesn\'t support geolocation.');
     }
 
+    function markMap(restTitle,restRating,restLoc,restPhone,pos,map){
+        var contentString = '<h4>' + restTitle + '</h4>' + '<h4>' 
+            + restRating + '</h4>' + '<h4>' + restLoc + '</h4>' +
+            '<h4>'  + restPhone + '</h4>';
 
-    //mark the map with restaurants
-    function markMap(restTitle,pos,map){
-        console.log("kek");
+        var infowindow = new google.maps.InfoWindow({
+               content: contentString
+       });
         var marker = new google.maps.Marker({
            position: pos, 
            map: map,
            title: restTitle,
-           url: 'www.usm.maine.edu', 
         });
 
+        if(restTitle.localeCompare("Your Location") == 0){
+            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+        }
+        marker.addListener('click', function() {
+        infowindow.open(map, marker);
+  });
+        
     }
-
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBr8V0XkaNFYkNXcP6eJc76b6YutvizwNw&callback=initMap">
     </script>

@@ -6,9 +6,13 @@ https://www.mindsumo.com/contests/d052bcf8-4580-4922-95ef-a9f6ceaf0f10
 
 Requirements:
     1. Submit a deployed web application and include both your website URL and the supporting Github repository.
-    2. The app must use Yelp's Fusion API - done(api calls work)
-    3. Your app should be able to plot merchants on a map - in progress
+    2. The app must use Yelp's Fusion API - done
+    3. Your app should be able to plot merchants on a map - done
     4. Your app should be able to obtain user location via HTML5 Geolocation - done 
+    
+  Other:
+     1. Click on map icon to bring up dialog box about restaurant
+     2. Clean up code 
 
 '''
 
@@ -33,37 +37,6 @@ restList = []
 restList3 = None
 @app.route('/', methods= ['GET', 'POST'])
 def geo():
-    someList = [1, 2, (3, 4)] # Note that the 3rd element is a tuple (3, 4)
-    someList2 = json.dumps(someList)
-    print(someList2) # '[1, 2, [3, 4]]'            print(python_data)
-    global isPlotted
-    api = Yelp
-    data = request.get_json()
-    if data is not None:
-        isPlotted = True
-        jsonify(data)
-        print(data)
-        lat = data['location']['lat']
-        lng = data['location']['lng']
-        print("working")
-        dataFromApi = api.search(API_KEY,'dinner',lat,lng)
-        json.dumps(dataFromApi)
-        print("Nearby Resaurants: ")
-        for nearby_restaurant in dataFromApi['businesses']:
-            restName = nearby_restaurant['name']
-            restLat = nearby_restaurant['coordinates']['latitude']
-            restLng = nearby_restaurant['coordinates']['longitude']
-            restObj = Resaurant(restName,restLat,restLng)
-            restList.append(restName)
-            #print(len(restList))
-            restList3 = json.dumps(restList)
-            #restList2 = map(json.dumps,restList)
-            #print(restList2)
-            #restList3.append(restList2)
-            #print(restList3)
-            restList3 = json.dumps(restList)
-            #print(restList3)
-            print(len(restList))
     return render_template('index.html')
     
 
@@ -81,18 +54,12 @@ def postmethod():
 @app.route('/getdata', methods=['GET'])
 def getdata():
     global data
-    someList = [1, 2, (3, 4)] # Note that the 3rd element is a tuple (3, 4)
-    someList2 = json.dumps(someList)
     print("getdata called")
-    print(data) #use this as lat/lng instead
     api = Yelp
     lat = data['location']['lat']
     lng = data['location']['lng']
-    #lat = 43.758081
-    #lng = -70.4648811
     dataFromApi = api.search(API_KEY,'dinner',lat,lng)
     json.dumps(dataFromApi)
-    #print("Nearby Resaurants: ")
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
     return Response(json.dumps(restList),  mimetype='application/json')

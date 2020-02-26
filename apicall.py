@@ -26,7 +26,7 @@ BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 DEFAULT_TERM = 'dinner'
 DEFAULT_LOCATION = 'Gorham, ME'
-SEARCH_LIMIT = 35
+SEARCH_LIMIT = 45
 
 class Yelp:
     def __init__(self):
@@ -59,5 +59,6 @@ def find(host, path, api_key, url_params=None):
     }
     print(u'Querying {0} ...'.format(url))
     response = requests.request('GET', url, headers=headers, params=url_params)
+    print(response)
     return response.json()
 
