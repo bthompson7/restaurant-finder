@@ -4,10 +4,11 @@ google-chrome --unsafely-treat-insecure-origin-as-secure="http://localhost:5000/
 because you can't use geolocation over http anymore
 -->
 <html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <head>
     <title>Restaurant  Finder</title>
     <meta charset="utf-8">
-    <!--jquery-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <style>
         #map {height: 100%;}
@@ -26,7 +27,6 @@ if(navigator.geolocation) {
       });  
     }
 
-
     function initMap() {
         var pos = {},
             map = new google.maps.Map(document.getElementById('map'), {
@@ -35,6 +35,7 @@ if(navigator.geolocation) {
             }),
             infoWindow = new google.maps.InfoWindow({map: map});
          console.log(navigator.geolocation);
+
         //HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -67,7 +68,6 @@ if(navigator.geolocation) {
                 dataType: "json",
                 success: function(response) {
                     rest = response
-                    print(rest[0]);
                     for(var i = 0; i < 45; i++){
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
@@ -75,16 +75,11 @@ if(navigator.geolocation) {
                        var restRating = rest[i]['rating'] + " stars with " + rest[i]['review_count'] + " reviews";
                        var restLoc = rest[i]['location']['display_address'][0] + " " + rest[i]['location']['display_address'][1]
                        var restPhone = rest[i]['display_phone'];
-                
-                       
-                       //var restReviewCount = rest[i]['review_count'];
-                       console.log(rest[i]);
                        pos = {
                          lat: restLat,
                          lng: restLng
                         };
                        markMap(restName,restRating,restLoc,restPhone,pos,map);
-                      //console.log(restName + " " + restLat + " " + restLng);
                     }
                 },
                 error: function(err) {
@@ -93,10 +88,8 @@ if(navigator.geolocation) {
             });
 
 
-    //pass array of rest. objects
-
+    //mark user location
     markMap("Your Location","","","",pos,map);
-
 
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
@@ -127,7 +120,7 @@ if(navigator.geolocation) {
         var marker = new google.maps.Marker({
            position: pos, 
            map: map,
-           title: restTitle,
+           title: restTitle
         });
 
         if(restTitle.localeCompare("Your Location") == 0){

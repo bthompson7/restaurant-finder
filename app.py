@@ -1,9 +1,6 @@
 '''
 https://www.mindsumo.com/contests/d052bcf8-4580-4922-95ef-a9f6ceaf0f10
 
-
-:
-
 Requirements:
     1. Submit a deployed web application and include both your website URL and the supporting Github repository.
     2. The app must use Yelp's Fusion API - done
@@ -11,14 +8,15 @@ Requirements:
     4. Your app should be able to obtain user location via HTML5 Geolocation - done 
     
   Other:
-     1. Click on map icon to bring up dialog box about restaurant
-     2. Clean up code 
+     1. Click on map icon to bring up dialog box about restaurant - done
+     2. Check the time and if its between like 2AM-11AM breakfast 11-3PM lunch 3PM-2AM dinner
+     3. 
+     4. Deploy to some host maybe my raspberry pi and then port forward?
 
 '''
 
 import time,os,json
 from apicall import Yelp
-from restaurant import Resaurant
 from flask import Flask,render_template, jsonify,request
 from flask import Response
 from twisted.internet import reactor
@@ -39,7 +37,6 @@ restList3 = None
 def geo():
     return render_template('index.html')
     
-
 '''
 called by index.html
 '''
@@ -48,7 +45,7 @@ def postmethod():
     global data
     data = request.get_json()
     print("postmethod called")
-    print(data) #use this as lat/lng instead
+    print(data)
     return data
 
 @app.route('/getdata', methods=['GET'])

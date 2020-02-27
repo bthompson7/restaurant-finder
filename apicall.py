@@ -25,7 +25,6 @@ SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 DEFAULT_TERM = 'dinner'
-DEFAULT_LOCATION = 'Gorham, ME'
 SEARCH_LIMIT = 45
 
 class Yelp:
@@ -50,7 +49,6 @@ class Yelp:
 '''
 helper function
 '''
-
 def find(host, path, api_key, url_params=None):
     url_params = url_params or {}
     url = '{0}{1}'.format(host, quote(path.encode('utf8')))
