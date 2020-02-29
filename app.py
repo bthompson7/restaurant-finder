@@ -10,15 +10,12 @@ Requirements:
   Other:
      1. Click on map icon to bring up dialog box about restaurant - done
      2. Check the time and if its between like 2AM-11AM breakfast 11-3PM lunch 3PM-2AM dinner
-     3. 
-     4. Deploy to some host maybe my raspberry pi and then port forward?
 
 '''
 
 import time,os,json
 from apicall import Yelp
-from flask import Flask,render_template, jsonify,request
-from flask import Response
+from flask import Flask,render_template, jsonify,request,Response
 from twisted.internet import reactor
 from twisted.web.proxy import ReverseProxyResource
 from twisted.web.resource import Resource
@@ -30,7 +27,6 @@ app = Flask(__name__)
 app.debug = True
 API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJcHxFy_8eF8uRJxqPTXpnGeRH5Pl5UJAdNm-CykfdKW98Wpw-aOWEYr9NXnYx'
 
-isPlotted = False
 restList = []
 restList3 = None
 @app.route('/', methods= ['GET', 'POST'])
@@ -44,18 +40,25 @@ called by index.html
 def postmethod():
     global data
     data = request.get_json()
-    print("postmethod called")
     print(data)
     return data
+
+@app.route('/rest', methods=['GET','POST'])
+def restTypeMethod():
+    global restType
+    restType = request.get_json()
+    print(restType)
+    return restType
 
 @app.route('/getdata', methods=['GET'])
 def getdata():
     global data
-    print("getdata called")
+    global restType
     api = Yelp
     lat = data['location']['lat']
     lng = data['location']['lng']
-    dataFromApi = api.search(API_KEY,'dinner',lat,lng)
+
+    dataFromApi = api.search(API_KEY,"lunch",lat,lng) #replace lunch with restType
     json.dumps(dataFromApi)
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
