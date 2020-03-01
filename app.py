@@ -29,13 +29,10 @@ API_KEY = 'tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJc
 
 restList = []
 restList3 = None
-@app.route('/', methods= ['GET', 'POST'])
+@app.route('/', methods= ['GET'])
 def geo():
     return render_template('index.html')
     
-'''
-called by index.html
-'''
 @app.route('/postmethod', methods=['GET','POST'])
 def postmethod():
     global data
@@ -45,21 +42,26 @@ def postmethod():
 
 @app.route('/rest', methods=['GET','POST'])
 def restTypeMethod():
-    global restType
-    restType = request.get_json()
-    print(restType)
-    return restType
+    global rest
+    rest = request.get_json()
+    print("T!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(rest)
+    return rest
 
 @app.route('/getdata', methods=['GET'])
 def getdata():
     global data
-    global restType
+    global rest
     api = Yelp
     lat = data['location']['lat']
     lng = data['location']['lng']
 
-    dataFromApi = api.search(API_KEY,"lunch",lat,lng) #replace lunch with restType
+    print("working!!!!!!!!!!!!!!!!!!!!!!")
+    print(rest['restType'])
+    dataFromApi = api.search(API_KEY,rest['restType'],lat,lng) #replace lunch with restType
     json.dumps(dataFromApi)
+    print(dataFromApi)
+    restList = []
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
     return Response(json.dumps(restList),  mimetype='application/json')

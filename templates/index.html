@@ -65,10 +65,17 @@ because you can't use geolocation over http anymore
 }
 </style>
 <body onload="myFunction()" style="margin:0;">
-    <h1>Nearby Restaurants:</h1>
+    <h1>Nearby Restaurants: (in development)</h1>
+    <button type="button" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
+    <button type="button" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
+    <button type="button" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
     <div id="info"></div>
     <div id="loader"></div> 
+    
+
     <script>
+        console.log("CALLING CHANGERESTYPE - LUNCH")
+        changeRestType("lunch");
 if(navigator.geolocation) {
       console.log("navigator.geolocation is available");
       navigator.geolocation.getCurrentPosition(function(position) {
@@ -89,24 +96,6 @@ if(navigator.geolocation) {
                 lng: position.coords.longitude
             };
 
-            /*
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:5000/rest",
-                contentType: "application/json",
-                data: JSON.stringify(),
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-            });
-
-            */
-
-
             $.ajax({
                 type: "POST",
                 url: "http://localhost:5000/postmethod",
@@ -121,6 +110,7 @@ if(navigator.geolocation) {
                 }
             });
 
+
             $.ajax({
                 type: "GET",
                 url: "http://localhost:5000/getdata",
@@ -129,8 +119,9 @@ if(navigator.geolocation) {
                 success: function(response) {
 
                     rest = response
-                    for(var i = 0; i < 45; i++){
-                        var item = document.createElement('li');
+                    console.log(rest);
+                    for(var i = 0; i < 45; i++){  
+                       var item = document.createElement('li');
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
                        var restLng = rest[i]['coordinates']['longitude'];
@@ -138,7 +129,7 @@ if(navigator.geolocation) {
                        var restLoc = rest[i]['location']['display_address'][0] + " " + rest[i]['location']['display_address'][1]
                        var restPhone = rest[i]['display_phone'];
                        var item = document.createElement('li');
-                       var restFullInfo = restName + " - " + restRating + " - "  + restLoc + " - "  + restPhone+ " ";
+                       var restFullInfo = restName + " | " + restRating + " | "  + restLoc + " | "  + restPhone+ " ";
                        item.append(restFullInfo);
                        list.append(item);
 
@@ -162,17 +153,44 @@ if(navigator.geolocation) {
 return list;
     }
 
-
-var a = initMap();
-document.getElementById('info').appendChild(a);
-
 function myFunction() {
-  myVar = setTimeout(showPage, 1000);
+  myVar = setTimeout(showPage,2000);
 }
 
 function showPage() {
   document.getElementById("loader").style.display = "none";
   document.getElementById("info").style.display = "block";
+
+
+
+}
+
+function changeRestType(type){
+
+alert(type);
+r = {
+                type
+            };
+
+$.ajax({
+            type: "POST",
+            url: "http://localhost:5000/rest",
+            contentType: "application/json",
+            data: JSON.stringify({restType: type}),
+            dataType: "json",
+             success: function(response) {
+                console.log(response);
+
+            },
+            error: function(err) {
+                console.log(err);
+
+            }
+        });
+
+var displayData2 = initMap();
+document.getElementById('info').innerHTML = "";
+document.getElementById('info').appendChild(displayData2);
 }
     </script>
 
