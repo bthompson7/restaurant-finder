@@ -16,9 +16,12 @@ because you can't use geolocation over http anymore
 </head>
 <body>
     <h1>Nearby Restaurants: (in development)</h1>
-    <button type="button" class="btn btn-outline-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
-    <button type="button" class="btn btn-outline-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
-    <button type="button" class="btn btn-outline-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+    <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-outline-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
+    <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-outline-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
+    <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-outline-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+    <div id="restTypeInfo" class="alert alert-primary" role="alert">
+        This is a primary alert—check it out!
+      </div>
     <div id="info"></div>
     <div id="spinner" class="spinner-border"></div>
     
@@ -107,13 +110,13 @@ if(navigator.geolocation) {
             console.log("Geolocation failed");
         }
 
-console.log("spinner");
 return list;
     }
 
 function changeRestType(type){
     spinner.style.visibility = "visible";
     console.log(spinner.style.visibility);
+
 //alert(type);
 r = {
                 type
@@ -138,6 +141,8 @@ $.ajax({
 var displayData2 = initMap();
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
+document.getElementById('restTypeInfo').innerHTML = "Currently displaying 50 restaurants that serve " + type;
+
 }
     </script>
 
