@@ -44,9 +44,18 @@ def postmethod():
 def restTypeMethod():
     global rest
     rest = request.get_json()
-    print("T!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print(rest)
     return rest
+
+
+@app.route('/restaurant/<string:id>', methods=['GET'])
+def displayRestaurantDetails(id):
+    someData = id
+    api = Yelp
+    dataFromApi = api.search_by_id(API_KEY,id)
+    print(dataFromApi)
+    return render_template('details.html',**locals())
+
 
 @app.route('/getdata', methods=['GET'])
 def getdata():
@@ -55,12 +64,9 @@ def getdata():
     api = Yelp
     lat = data['location']['lat']
     lng = data['location']['lng']
-
-    print("working!!!!!!!!!!!!!!!!!!!!!!")
     print(rest['restType'])
-    dataFromApi = api.search(API_KEY,rest['restType'],lat,lng) #replace lunch with restType
+    dataFromApi = api.search_nearby(API_KEY,rest['restType'],lat,lng) #replace lunch with restType
     json.dumps(dataFromApi)
-    print(dataFromApi)
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)

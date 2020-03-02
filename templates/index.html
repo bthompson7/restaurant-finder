@@ -16,9 +16,9 @@ because you can't use geolocation over http anymore
 </head>
 <body>
     <h1>Nearby Restaurants: (in development)</h1>
-    <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-outline-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
-    <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-outline-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
-    <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-outline-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+    <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
+    <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
+    <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
     <div id="restTypeInfo" class="alert alert-primary" role="alert">
         This is a primary alert—check it out!
       </div>
@@ -76,10 +76,11 @@ if(navigator.geolocation) {
                 success: function(response) {
 
                     rest = response
-                    //console.log(rest);
+                    console.log(rest);
                     
-                    for(var i = 0; i < 50 ; i++){  
+                    for(var i = 0; i < 5 ; i++){  
                        var item = document.createElement('li');
+                       var restID = rest[i]['id'];
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
                        var restLng = rest[i]['coordinates']['longitude'];
@@ -87,9 +88,17 @@ if(navigator.geolocation) {
                        var restLoc = rest[i]['location']['display_address'][0] + " " + rest[i]['location']['display_address'][1]
                        var restPhone = rest[i]['display_phone'];
                        var item = document.createElement('li');
+                       var restDetailsDiv = document.createElement('div');
+                       var restDetailsLink = document.createElement('a');
+                       restDetailsLink.innerText = "View Restaurant Details";
+                       restDetailsLink.className = "btn btn-info";
+                       restDetailsLink.href = "http://localhost:5000/restaurant/" + restID;
+                       restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
-                       var restFullInfo = restName + "  " + restRating + "  "  + restLoc + "  "  + restPhone+ "";
+                       var restFullInfo = restName + "  " + restRating + "  "  + restLoc + "  "  + restPhone+ "  ";
                        item.append(restFullInfo);
+                       //item.append(restDetails)
+                       item.append(restDetailsDiv);
                        list.append(item);
                        pos = {
                          lat: restLat,
