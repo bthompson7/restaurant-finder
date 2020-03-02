@@ -25,7 +25,7 @@ SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 
 DEFAULT_TERM = 'dinner'
-SEARCH_LIMIT = 45
+SEARCH_LIMIT = 50
 
 class Yelp:
     def __init__(self):
