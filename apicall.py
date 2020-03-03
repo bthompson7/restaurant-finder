@@ -1,12 +1,5 @@
 '''
 class for calling the yelp api
-
-Client ID: ItgnlXYQLsD3_6xF47TJuQ
-API Key
-
-tn0G7Fq-F_RSxsvFfiYZ-8yBnuYP8xx58hzTr-kfCPILYlXHC-fvNvBccNJ_IOYfvvDJcHxFy_8eF8uRJxqPTXpnGeRH5Pl5UJAdNm-CykfdKW98Wpw-aOWEYr9NXnYx
-
-
 '''
 from __future__ import print_function
 import argparse
@@ -22,10 +15,7 @@ from urllib.parse import urlencode
 # API constants
 API_HOST = 'https://api.yelp.com'
 SEARCH_PATH = '/v3/businesses/search'
-BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
-
-DEFAULT_TERM = 'dinner'
-SEARCH_LIMIT = 45
+SEARCH_LIMIT = 50
 
 class Yelp:
     def __init__(self):
@@ -34,7 +24,7 @@ class Yelp:
     '''
     calls the yelp api 
     '''
-    def search(api_key,term,lat,lng):
+    def search_nearby(api_key,term,lat,lng):
         data = "api call!"
         url_params = {
            'term': term.replace(' ', '+'),
@@ -45,6 +35,11 @@ class Yelp:
         print(url_params)
         return find(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
 
+    def search_by_id(api_key,id):
+        restDetailsData = "api call2"
+        BUSINESS_PATH = '/v3/businesses/'
+        BUSINESS_PATH+= id
+        return find(API_HOST, BUSINESS_PATH, api_key, url_params=id)
 
 '''
 helper function
@@ -57,6 +52,10 @@ def find(host, path, api_key, url_params=None):
     }
     print(u'Querying {0} ...'.format(url))
     response = requests.request('GET', url, headers=headers, params=url_params)
-    print(response)
+    response_code = response.status_code
+    if response_code == 200:
+        print("response ok %s"%response_code)
+    else:
+        print("ERROR!: %s"%response_code)
     return response.json()
 
