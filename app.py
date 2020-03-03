@@ -9,7 +9,8 @@ Requirements:
     
   Other:
      1. Click on map icon to bring up dialog box about restaurant - done
-     2. Check the time and if its between like 2AM-11AM breakfast 11-3PM lunch 3PM-2AM dinner
+     2. Details for restaurant 
+     
 
 '''
 

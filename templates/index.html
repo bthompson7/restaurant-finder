@@ -78,7 +78,7 @@ if(navigator.geolocation) {
                     rest = response
                     console.log(rest);
                     
-                    for(var i = 0; i < 5 ; i++){  
+                    for(var i = 0; i < 50 ; i++){  
                        var item = document.createElement('li');
                        var restID = rest[i]['id'];
                        var restName = rest[i]['name'];
@@ -154,6 +154,5 @@ document.getElementById('restTypeInfo').innerHTML = "Currently displaying 50 res
 
 }
     </script>
-
 </body>
 </html>
