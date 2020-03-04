@@ -54,6 +54,11 @@ def displayRestaurantDetails(id):
     someData = id
     api = Yelp
     dataFromApi = api.search_by_id(API_KEY,id)
+    restHasHoursListed = True
+    try:
+        print(dataFromApi['hours'][0]['is_open_now'])
+    except:
+        restHasHoursListed = False
     print(dataFromApi)
     return render_template('details.html',**locals())
 
