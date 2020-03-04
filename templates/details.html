@@ -10,17 +10,21 @@
 <body>
 <h1>{{dataFromApi['name']}}</h1>
 <hr>
-{% if dataFromApi['is_closed']  == False %}
-<div id="restTypeInfo" class="alert alert-success" role="alert">
-   This business is open!</div>
-{% else %}
-<div id="restTypeInfo" class="alert alert-danger" role="alert">
-This business is closed.  
-</div>
-{% endif%}
 
 
-<h2>{{dataFromApi['rating']}} stars</h2>
+
+{% if restHasHoursListed is sameas true %}
+     {% if dataFromApi['hours'][0]['is_open_now'] is sameas true%}
+     <div class="alert alert-info" role="alert">{{dataFromApi['name']}} is currently open!</div>
+     {%else%}
+     <div class="alert alert-info" role="alert">{{dataFromApi['name']}} is currently closed!</div>
+
+     {%endif%}
+{%else%}
+<div class="alert alert-danger" role="alert">This restaurant doesn't have business hours on yelp</div>
+
+{%endif%}
+<h2>{{dataFromApi['rating']}} out of 5 stars</h2>
 <h2>{{dataFromApi['review_count']}} Reviews </h2>
 <h2>Price: {{dataFromApi['price']}}</h2>
 <h2>Location: {{dataFromApi['location']['display_address'][0]}} {{dataFromApi['location']['display_address'][1]}}</h2>
@@ -47,6 +51,7 @@ function showPhotos() {
     x.style.display = "none";
   }
 }
+
 </script>
 </body>
 </html>
