@@ -15,7 +15,7 @@ because you can't use geolocation over http anymore
     </script>
 </head>
 <body>
-    <h1>Nearby Restaurants: (in development)</h1>
+    <h1>Nearby Restaurants:</h1>
     <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
     <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
     <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
@@ -79,7 +79,7 @@ if(navigator.geolocation) {
                     console.log(rest);
                     
                     for(var i = 0; i < 50 ; i++){  
-                       var item = document.createElement('li');
+                       //var item = document.createElement('li');
                        var restID = rest[i]['id'];
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
@@ -92,6 +92,7 @@ if(navigator.geolocation) {
                        var restDetailsLink = document.createElement('a');
                        restDetailsLink.innerText = "View Restaurant Details";
                        restDetailsLink.className = "btn btn-info";
+                       restDetailsLink.target="_blank"
                        restDetailsLink.href = "http://localhost:5000/restaurant/" + restID;
                        restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
