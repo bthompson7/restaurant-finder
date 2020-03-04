@@ -12,16 +12,15 @@
 
 
 <h1>{{dataFromApi["name"]}}</h1>
+<hr>
 <h2>{{dataFromApi["rating"]}} Stars</h2>
 <h2>{{dataFromApi["review_count"]}} Reviews </h2>
-
-{% for j in dataFromApi["location"]["display_address"] %}
-<h2>Location: {{[j][0]}}</h2>
-{% endfor %}
+<h2>Price: {{dataFromApi['price']}}</h2>
+<h2>Location: {{dataFromApi["location"]["display_address"][0]}} {{dataFromApi["location"]["display_address"][1]}}</h2>
 
 <h1>Here are some photos: </h1>
 {% for i in dataFromApi["photos"] %}
-<img src={{i}}>
+<img src={{i}} class="img-fluid" alt="Responsive image">
 {% endfor %}
 
 
