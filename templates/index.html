@@ -26,8 +26,9 @@ because you can't use geolocation over http anymore
 
     <script>
     var spinner = document.getElementById("spinner");
+    var global = this; // in global scope.
 
-        console.log("CALLING CHANGERESTYPE - LUNCH")
+    var numOfResults = 0;
         changeRestType("lunch");
 if(navigator.geolocation) {
       console.log("navigator.geolocation is available");
@@ -74,9 +75,10 @@ if(navigator.geolocation) {
                 success: function(response) {
 
                     rest = response
-                    console.log(rest);
-                    
-                    for(var i = 0; i < 50 ; i++){  
+                    var numOfResults = rest.length;
+                    console.log(numOfResults);
+
+                    for(var i = 0; i < numOfResults; i++){  
                        //var item = document.createElement('li');
                        var restID = rest[i]['id'];
                        var restName = rest[i]['name'];
@@ -149,7 +151,8 @@ $.ajax({
 var displayData2 = initMap();
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
-document.getElementById('restTypeInfo').innerHTML = "Currently displaying 50 restaurants that serve " + type;
+console.log(displayData2);
+document.getElementById('restTypeInfo').innerHTML = "Currently displaying " + 50 + " restaurants that serve " + type;
 
 }
     </script>

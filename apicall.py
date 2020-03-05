@@ -30,6 +30,7 @@ class Yelp:
            'term': term.replace(' ', '+'),
             'latitude':lat,
             'longitude':lng,
+            'open_now':True,
             'limit': SEARCH_LIMIT
         }
         print(url_params)
