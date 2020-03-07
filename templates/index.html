@@ -22,11 +22,14 @@ because you can't use geolocation over http anymore
       </div>
     <div id="info"></div>
     <div id="spinner" class="spinner-border"></div>
+    <div id="spinner-msg"><p>Find restaurants nearby...</p></div>
     
 
     <script>
     var spinner = document.getElementById("spinner");
-    var global = this; // in global scope.
+    var spinnerMsg = document.getElementById("spinner-msg");
+
+    var global = this;
 
     var numOfResults = 0;
         changeRestType("lunch");
@@ -107,6 +110,7 @@ if(navigator.geolocation) {
                         };
                     }
                     var spinner = document.getElementById("spinner");
+                    spinnerMsg.style.visibility = 'hidden';
                      spinner.style.visibility = 'hidden';
                      console.log(spinner.style.visibility);
                 },
@@ -125,6 +129,7 @@ return list;
 
 function changeRestType(type){
     spinner.style.visibility = "visible";
+    spinnerMsg.style.visibility = "visible";
     console.log(spinner.style.visibility);
 
 //alert(type);
