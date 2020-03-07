@@ -64,7 +64,7 @@ https://findarestaurantnearme.herokuapp.com
                */
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5000/postmethod", //http://localhost:5000 normal 
+                url: "https://findarestaurantnearme.herokuapp.com/postmethod", //http://localhost:5000 normal 
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -79,7 +79,7 @@ https://findarestaurantnearme.herokuapp.com
 
             $.ajax({
                 type: "GET",
-                url: "http://localhost:5000/getdata",
+                url: "https://findarestaurantnearme.herokuapp.com/getdata",
                 contentType: "application/json",
                 dataType: "json",
                 success: function(response) {
@@ -103,7 +103,7 @@ https://findarestaurantnearme.herokuapp.com
                        restDetailsLink.innerText = "View Restaurant Details";
                        restDetailsLink.className = "btn btn-info";
                        restDetailsLink.target="_blank"
-                       restDetailsLink.href = "http://localhost:5000/restaurant/" + restID;
+                       restDetailsLink.href = "https://findarestaurantnearme.herokuapp.com/restaurant/" + restID;
                        restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
                        var restNameHTML = document.createElement("h2");
@@ -150,7 +150,7 @@ r = {
 
 $.ajax({
             type: "POST",
-            url: "http://localhost:5000/rest",
+            url: "https://findarestaurantnearme.herokuapp.com/rest",
             contentType: "application/json",
             data: JSON.stringify({restType: type}),
             dataType: "json",
