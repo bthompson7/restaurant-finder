@@ -1,10 +1,8 @@
 '''
 class for calling the yelp api
 '''
-from __future__ import print_function
 import argparse
 import json
-import pprint
 import requests
 import sys
 import urllib
