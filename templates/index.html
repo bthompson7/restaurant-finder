@@ -57,7 +57,7 @@ if(navigator.geolocation) {
 
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5000/postmethod",
+                url: "https://findarestaurantnearme.herokuapp.com/postmethod", //http://localhost:5000 normal
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -72,7 +72,7 @@ if(navigator.geolocation) {
 
             $.ajax({
                 type: "GET",
-                url: "http://localhost:5000/getdata",
+                url: "https://findarestaurantnearme.herokuapp.com/getdata",
                 contentType: "application/json",
                 dataType: "json",
                 success: function(response) {
@@ -96,7 +96,7 @@ if(navigator.geolocation) {
                        restDetailsLink.innerText = "View Restaurant Details";
                        restDetailsLink.className = "btn btn-info";
                        restDetailsLink.target="_blank"
-                       restDetailsLink.href = "http://localhost:5000/restaurant/" + restID;
+                       restDetailsLink.href = "https://findarestaurantnearme.herokuapp.com/restaurant/" + restID;
                        restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
                        var restFullInfo = restName + "  " + restRating + "  "  + restLoc + "  "  + restPhone+ "  ";
@@ -139,7 +139,7 @@ r = {
 
 $.ajax({
             type: "POST",
-            url: "http://localhost:5000/rest",
+            url: "https://findarestaurantnearme.herokuapp.com/rest",
             contentType: "application/json",
             data: JSON.stringify({restType: type}),
             dataType: "json",
