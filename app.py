@@ -76,6 +76,7 @@ def getdata():
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
+            
     return Response(json.dumps(restList),  mimetype='application/json')
 
 if __name__ == '__main__':

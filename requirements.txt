@@ -9,7 +9,6 @@ Automat==20.2.0
 backports.csv==1.0.7
 beautifulsoup4==4.7.1
 bluetool==0.2.3
-Brlapi==0.6.6
 bs4==0.0.1
 certifi==2019.11.28
 cffi==1.14.0
