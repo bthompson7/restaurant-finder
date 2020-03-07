@@ -17,12 +17,6 @@ Requirements:
 import time,os,json
 from apicall import Yelp
 from flask import Flask,render_template, jsonify,request,Response
-from twisted.internet import reactor
-from twisted.web.proxy import ReverseProxyResource
-from twisted.web.resource import Resource
-from twisted.web.server import Site
-from twisted.web.wsgi import WSGIResource
-
 
 app = Flask(__name__)
 app.debug = True
