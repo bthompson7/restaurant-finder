@@ -29,6 +29,16 @@
 <h2>Price: {{dataFromApi['price']}}</h2>
 <h2>Phone: {{dataFromApi['display_phone']}}</h2>
 <h2>Location: {{dataFromApi['location']['display_address'][0]}} {{dataFromApi['location']['display_address'][1]}}</h2>
+
+
+
+
+<div id="Map" style="height:300px"></div>
+
+
+
+
+
 <div><a target="_blank"  class="btn btn-primary" role="button" href="https://www.yelp.com/menu/{{dataFromApi['alias']}}">View Menu</a>
 </div>
 <button class="btn btn-primary" onclick="showPhotos()">Show Photos</button>
@@ -36,12 +46,17 @@
 <div id="restPhotos">
     <h1>Here are some photos: </h1>
     {% for i in dataFromApi["photos"] %}
+    <h1>Photo:</h1>
     <img src={{i}} class="img-fluid" alt="Responsive image">
+    <br>
     {% endfor %}
 </div>
 
 
+<script src="http://www.openlayers.org/api/OpenLayers.js"></script>
 <script>
+
+//code for photos
 var x = document.getElementById("restPhotos");
 x.style.display = "none";
 function showPhotos() {
@@ -53,6 +68,21 @@ function showPhotos() {
   }
 }
 
+
+//Map code
+var lat            = "{{dataFromApi['coordinates']['latitude']}}";
+    var lon            = "{{dataFromApi['coordinates']['longitude']}}";
+    var zoom           = 18;
+    var fromProjection = new OpenLayers.Projection("EPSG:4326");  
+    var toProjection   = new OpenLayers.Projection("EPSG:900913");
+    var position       = new OpenLayers.LonLat(lon, lat).transform( fromProjection, toProjection);
+    map = new OpenLayers.Map("Map");
+    var mapnik         = new OpenLayers.Layer.OSM();
+    map.addLayer(mapnik);
+    var markers = new OpenLayers.Layer.Markers( "Markers" );
+    map.addLayer(markers);
+    markers.addMarker(new OpenLayers.Marker(position));
+    map.setCenter(position, zoom);
 </script>
 </body>
 </html>

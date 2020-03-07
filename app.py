@@ -31,8 +31,10 @@ def geo():
 @app.route('/postmethod', methods=['GET','POST'])
 def postmethod():
     global data
+    print("post method called 1")
     data = request.get_json()
     print(data)
+    print("post method called 2")
     return data
 
 @app.route('/rest', methods=['GET','POST'])
@@ -40,6 +42,7 @@ def restTypeMethod():
     global rest
     rest = request.get_json()
     print(rest)
+    print("rest method")
     return rest
 
 
