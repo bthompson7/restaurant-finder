@@ -1,6 +1,5 @@
 absl-py==0.7.1
 aiohttp==1.0.5
-apturl==0.5.2
 args==0.1.0
 asn1crypto==0.24.0
 astor==0.8.0
@@ -149,5 +148,4 @@ websockets==3.4
 Werkzeug==1.0.0
 wrapt==1.11.2
 xkit==0.0.0
-youtube-dl==2019.11.28
 zope.interface==4.7.1
