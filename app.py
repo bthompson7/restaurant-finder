@@ -17,12 +17,6 @@ Requirements:
 import time,os,json
 from apicall import Yelp
 from flask import Flask,render_template, jsonify,request,Response
-from twisted.internet import reactor
-from twisted.web.proxy import ReverseProxyResource
-from twisted.web.resource import Resource
-from twisted.web.server import Site
-from twisted.web.wsgi import WSGIResource
-
 
 app = Flask(__name__)
 app.debug = True
@@ -37,8 +31,10 @@ def geo():
 @app.route('/postmethod', methods=['GET','POST'])
 def postmethod():
     global data
+    print("post method called 1")
     data = request.get_json()
     print(data)
+    print("post method called 2")
     return data
 
 @app.route('/rest', methods=['GET','POST'])
@@ -46,6 +42,7 @@ def restTypeMethod():
     global rest
     rest = request.get_json()
     print(rest)
+    print("rest method")
     return rest
 
 
@@ -76,6 +73,7 @@ def getdata():
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
+            
     return Response(json.dumps(restList),  mimetype='application/json')
 
 if __name__ == '__main__':

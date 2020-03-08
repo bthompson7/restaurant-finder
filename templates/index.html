@@ -55,9 +55,16 @@ if(navigator.geolocation) {
                 lng: position.coords.longitude
             };
 
+
+
+               /*
+https://findarestaurantnearme.herokuapp.com
+
+
+               */
             $.ajax({
                 type: "POST",
-                url: "http://localhost:5000/postmethod",
+                url: "https://findarestaurantnearme.herokuapp.com/postmethod", //http://localhost:5000 normal 
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -72,7 +79,7 @@ if(navigator.geolocation) {
 
             $.ajax({
                 type: "GET",
-                url: "http://localhost:5000/getdata",
+                url: "https://findarestaurantnearme.herokuapp.com/getdata",
                 contentType: "application/json",
                 dataType: "json",
                 success: function(response) {
@@ -96,12 +103,15 @@ if(navigator.geolocation) {
                        restDetailsLink.innerText = "View Restaurant Details";
                        restDetailsLink.className = "btn btn-info";
                        restDetailsLink.target="_blank"
-                       restDetailsLink.href = "http://localhost:5000/restaurant/" + restID;
+                       restDetailsLink.href = "https://findarestaurantnearme.herokuapp.com/restaurant/" + restID;
                        restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
-                       var restFullInfo = restName + "  " + restRating + "  "  + restLoc + "  "  + restPhone+ "  ";
-                       item.append(restFullInfo);
-                       //item.append(restDetails)
+                       var restNameHTML = document.createElement("h2");
+                       var restRatingHTML = document.createElement("h2");
+                       restNameHTML.innerText = restName;
+                       restRatingHTML.innerText = restRating;
+                       item.append(restNameHTML);
+                       item.append(restRatingHTML);
                        item.append(restDetailsDiv);
                        list.append(item);
                        pos = {
@@ -128,6 +138,7 @@ return list;
     }
 
 function changeRestType(type){
+    console.log(type);
     spinner.style.visibility = "visible";
     spinnerMsg.style.visibility = "visible";
     console.log(spinner.style.visibility);
@@ -139,11 +150,12 @@ r = {
 
 $.ajax({
             type: "POST",
-            url: "http://localhost:5000/rest",
+            url: "https://findarestaurantnearme.herokuapp.com/rest",
             contentType: "application/json",
             data: JSON.stringify({restType: type}),
             dataType: "json",
              success: function(response) {
+                 console.log("got response from rest method");
                 console.log(response);
 
             },
@@ -153,11 +165,12 @@ $.ajax({
             }
         });
 
+console.log("about to call initMap");
 var displayData2 = initMap();
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
 console.log(displayData2);
-document.getElementById('restTypeInfo').innerHTML = "Currently displaying " + 50 + " restaurants that serve " + type;
+document.getElementById('restTypeInfo').innerHTML = "Currently displaying restaurants that serve " + type;
 
 }
     </script>
