@@ -20,8 +20,7 @@ from flask import Flask,render_template, jsonify,request,Response
 
 app = Flask(__name__)
 app.debug = True
-apiKeyFile = open('apikey.txt','r') 
-API_KEY = apiKeyFile.readlines() 
+API_KEY = os.environ['API_KEY']
 
 restList = []
 restList3 = None
