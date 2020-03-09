@@ -1,13 +1,10 @@
 <!DOCTYPE html>
-<!-- Note to self: Make sure to run chrome from cmd line using 
-google-chrome --unsafely-treat-insecure-origin-as-secure="http://localhost:5000/"
-because you can't use geolocation over http anymore
--->
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <head>
     <title>Restaurant  Finder</title>
     <meta charset="utf-8">
+    <!-- jQuery/Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
@@ -28,24 +25,19 @@ because you can't use geolocation over http anymore
     <script>
     var spinner = document.getElementById("spinner");
     var spinnerMsg = document.getElementById("spinner-msg");
-
-    var global = this;
-
     var numOfResults = 0;
-        changeRestType("lunch");
-if(navigator.geolocation) {
-      console.log("navigator.geolocation is available");
-      navigator.geolocation.getCurrentPosition(function(position) {
-        console.log("current position acquired");
-      });  
+    changeRestType("lunch");
+    if(navigator.geolocation) {
+       console.log("navigator.geolocation is available");
+       navigator.geolocation.getCurrentPosition(function(position) {
+       console.log("current position acquired");
+         });  
     }
 
-    function initMap() {
+    function initListOfRestaurants() {
         var list = document.createElement('ul');
-
-           list.className = "list-group";
-
-         console.log(navigator.geolocation);
+        list.className = "list-group";
+        console.log(navigator.geolocation);
 
         //HTML5 geolocation.
         if (navigator.geolocation) {
@@ -55,16 +47,10 @@ if(navigator.geolocation) {
                 lng: position.coords.longitude
             };
 
-
-
-               /*
-https://findarestaurantnearme.herokuapp.com
-
-
-               */
+            //
             $.ajax({
                 type: "POST",
-                url: "https://findarestaurantnearme.herokuapp.com/postmethod", //http://localhost:5000 normal 
+                url: "https://findarestaurantnearme.herokuapp.com/findlocation",
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -86,10 +72,10 @@ https://findarestaurantnearme.herokuapp.com
 
                     rest = response
                     var numOfResults = rest.length;
-                    console.log(numOfResults);
+                    console.log("Got " + numOfResults + "results");
 
                     for(var i = 0; i < numOfResults; i++){  
-                       //var item = document.createElement('li');
+                        //parse data
                        var restID = rest[i]['id'];
                        var restName = rest[i]['name'];
                        var restLat = rest[i]['coordinates']['latitude'];
@@ -97,6 +83,8 @@ https://findarestaurantnearme.herokuapp.com
                        var restRating = rest[i]['rating'] + " stars with " + rest[i]['review_count'] + " reviews";
                        var restLoc = rest[i]['location']['display_address'][0] + " " + rest[i]['location']['display_address'][1]
                        var restPhone = rest[i]['display_phone'];
+ 
+                        //display the data
                        var item = document.createElement('li');
                        var restDetailsDiv = document.createElement('div');
                        var restDetailsLink = document.createElement('a');
@@ -138,15 +126,9 @@ return list;
     }
 
 function changeRestType(type){
-    console.log(type);
+    console.log("restaurant type changed to " + type);
     spinner.style.visibility = "visible";
     spinnerMsg.style.visibility = "visible";
-    console.log(spinner.style.visibility);
-
-//alert(type);
-r = {
-                type
-            };
 
 $.ajax({
             type: "POST",
@@ -155,7 +137,6 @@ $.ajax({
             data: JSON.stringify({restType: type}),
             dataType: "json",
              success: function(response) {
-                 console.log("got response from rest method");
                 console.log(response);
 
             },
@@ -165,8 +146,7 @@ $.ajax({
             }
         });
 
-console.log("about to call initMap");
-var displayData2 = initMap();
+var displayData2 = initListOfRestaurants();
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
 console.log(displayData2);

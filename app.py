@@ -28,21 +28,16 @@ restList3 = None
 def geo():
     return render_template('index.html')
     
-@app.route('/postmethod', methods=['GET','POST'])
+@app.route('/findlocation', methods=['GET','POST'])
 def postmethod():
     global data
-    print("post method called 1")
     data = request.get_json()
-    print(data)
-    print("post method called 2")
     return data
 
 @app.route('/rest', methods=['GET','POST'])
 def restTypeMethod():
     global rest
     rest = request.get_json()
-    print(rest)
-    print("rest method")
     return rest
 
 
@@ -68,7 +63,7 @@ def getdata():
     lat = data['location']['lat']
     lng = data['location']['lng']
     print(rest['restType'])
-    dataFromApi = api.search_nearby(API_KEY,rest['restType'],lat,lng) #replace lunch with restType
+    dataFromApi = api.search_nearby(API_KEY,rest['restType'],lat,lng)
     json.dumps(dataFromApi)
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
