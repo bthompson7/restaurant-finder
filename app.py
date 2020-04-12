@@ -24,6 +24,9 @@ API_KEY = os.environ['API_KEY']
 
 restList = []
 restList3 = None
+data = None
+rest = None
+
 @app.route('/', methods= ['GET'])
 def geo():
     return render_template('index.html')
@@ -45,7 +48,7 @@ def restTypeMethod():
 def displayRestaurantDetails(id):
     someData = id
     api = Yelp
-    dataFromApi = api.search_by_id(API_KEY,id)
+    dataFromApi = api.search_by_id(id)
     restHasHoursListed = True
     try:
         print(dataFromApi['hours'][0]['is_open_now'])
@@ -63,13 +66,15 @@ def getdata():
     lat = data['location']['lat']
     lng = data['location']['lng']
     print(rest['restType'])
-    dataFromApi = api.search_nearby(API_KEY,rest['restType'],lat,lng)
+    dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
     json.dumps(dataFromApi)
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
             restList.append(nearby_restaurant)
-            
-    return Response(json.dumps(restList),  mimetype='application/json')
+    
+    response = Response(json.dumps(restList),  mimetype='application/json')
+    print(response) 
+    return response
 
 if __name__ == '__main__':
         app.run()

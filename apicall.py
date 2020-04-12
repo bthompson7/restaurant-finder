@@ -2,6 +2,7 @@
 class for calling the yelp api
 '''
 import argparse
+import os
 import json
 import requests
 import sys
@@ -13,41 +14,41 @@ from urllib.parse import urlencode
 # API constants
 API_HOST = 'https://api.yelp.com'
 SEARCH_PATH = '/v3/businesses/search'
-SEARCH_LIMIT = 50
 
 class Yelp:
     def __init__(self):
-        pass
+        pass        
 
     '''
     calls the yelp api 
     '''
-    def search_nearby(api_key,term,lat,lng):
+    def search_nearby(search_limit,term,lat,lng):
         data = "api call!"
         url_params = {
            'term': term.replace(' ', '+'),
             'latitude':lat,
             'longitude':lng,
             'open_now':True,
-            'limit': SEARCH_LIMIT
+            'limit': search_limit
         }
         print(url_params)
-        return find(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
+        return find(API_HOST, SEARCH_PATH, url_params=url_params)
 
-    def search_by_id(api_key,id):
+    def search_by_id(id):
         restDetailsData = "api call2"
         BUSINESS_PATH = '/v3/businesses/'
         BUSINESS_PATH+= id
-        return find(API_HOST, BUSINESS_PATH, api_key, url_params=id)
+        return find(API_HOST, BUSINESS_PATH, url_params=id)
 
 '''
 helper function
 '''
-def find(host, path, api_key, url_params=None):
+def find(host, path, url_params=None):
+    API_KEY = os.environ['API_KEY']
     url_params = url_params or {}
     url = '{0}{1}'.format(host, quote(path.encode('utf8')))
     headers = {
-        'Authorization': 'Bearer %s' % api_key,
+        'Authorization': 'Bearer %s' % API_KEY,
     }
     print(u'Querying {0} ...'.format(url))
     response = requests.request('GET', url, headers=headers, params=url_params)
