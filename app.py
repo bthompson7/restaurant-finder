@@ -24,8 +24,6 @@ API_KEY = os.environ['API_KEY']
 
 restList = []
 restList3 = None
-data = None
-rest = None
 
 @app.route('/', methods= ['GET'])
 def geo():
@@ -60,11 +58,12 @@ def displayRestaurantDetails(id):
 
 @app.route('/getdata', methods=['GET'])
 def getdata():
-    global data
-    global rest
+    print("getdata called")
     api = Yelp
+    global data
     lat = data['location']['lat']
     lng = data['location']['lng']
+    global rest
     print(rest['restType'])
     dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
     json.dumps(dataFromApi)
