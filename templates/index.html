@@ -4,16 +4,42 @@
 <head>
     <title>Restaurant  Finder</title>
     <meta charset="utf-8">
-    <!-- jQuery/Bootstrap -->
+    
+    <!-- jQuery/Bootstrap stuff -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 </head>
+
 <body>
     <h1>Nearby Restaurants:</h1>
     <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
     <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
     <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Specific Food Type
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+          <button class="dropdown-item" type="button" onClick="changeFoodType('pizza')">Pizza</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('italian')">Italian</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('chinese')">Chinese</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('coffee')">Coffee</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('breweries')">Breweries</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('comfortfood')">Comfort Food</button>
+        </div>
+      </div>
+<!--
+
+coffee
+pizza
+comfortfood
+breweries
+italian
+chinese
+-->
     <div id="restTypeInfo" class="alert alert-primary" role="alert">
         This is a primary alert—check it out!
       </div>
@@ -26,6 +52,7 @@
     var spinner = document.getElementById("spinner");
     var spinnerMsg = document.getElementById("spinner-msg");
     var numOfResults = 0;
+    var testURL = "https://findarestaurantnearme.herokuapp.com/"; //http://localhost:5000/
     changeRestType("lunch");
     if(navigator.geolocation) {
        console.log("navigator.geolocation is available");
@@ -38,7 +65,6 @@
         var list = document.createElement('ul');
         list.className = "list-group";
         console.log(navigator.geolocation);
-
         //HTML5 geolocation.
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -50,7 +76,7 @@
             //
             $.ajax({
                 type: "POST",
-                url: "https://findarestaurantnearme.herokuapp.com/findlocation",
+                url: testURL + "findlocation",
                 contentType: "application/json",
                 data: JSON.stringify({location: pos}),
                 dataType: "json",
@@ -65,7 +91,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "https://findarestaurantnearme.herokuapp.com/getdata",
+                url:  testURL + "getdata",
                 contentType: "application/json",
                 dataType: "json",
                 success: function(response) {
@@ -91,7 +117,7 @@
                        restDetailsLink.innerText = "View Restaurant Details";
                        restDetailsLink.className = "btn btn-info";
                        restDetailsLink.target="_blank"
-                       restDetailsLink.href = "https://findarestaurantnearme.herokuapp.com/restaurant/" + restID;
+                       restDetailsLink.href =  testURL + "restaurant/" + restID;
                        restDetailsDiv.append(restDetailsLink);
                        item.className = "list-group-item";
                        var restNameHTML = document.createElement("h2");
@@ -125,6 +151,37 @@
 return list;
     }
 
+
+function changeFoodType(cat){
+    console.log(cat);
+    spinner.style.visibility = "visible";
+    spinnerMsg.style.visibility = "visible";
+
+    $.ajax({
+            type: "POST",
+            url: testURL + "foodtype",
+            contentType: "application/json",
+            data: JSON.stringify({foodType: cat}),
+            dataType: "json",
+             success: function(response) {
+                console.log(response);
+
+            },
+            error: function(err) {
+                console.log(err);
+
+            }
+        });
+
+var displayData2 = initListOfRestaurants();
+document.getElementById('info').innerHTML = "";
+document.getElementById('info').appendChild(displayData2);
+console.log(displayData2);
+document.getElementById('restTypeInfo').innerHTML = "Currently displaying " + cat + " restaurants";
+
+
+}
+
 function changeRestType(type){
     console.log("restaurant type changed to " + type);
     spinner.style.visibility = "visible";
@@ -132,7 +189,7 @@ function changeRestType(type){
 
 $.ajax({
             type: "POST",
-            url: "https://findarestaurantnearme.herokuapp.com/rest",
+            url: testURL + "rest",
             contentType: "application/json",
             data: JSON.stringify({restType: type}),
             dataType: "json",
@@ -142,7 +199,6 @@ $.ajax({
             },
             error: function(err) {
                 console.log(err);
-
             }
         });
 

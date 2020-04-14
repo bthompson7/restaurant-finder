@@ -10,6 +10,7 @@ Requirements:
   Other:
      1. Click on map icon to bring up dialog box about restaurant - done
      2. Details for restaurant 
+     3. Search by type pizza,sushi...
      
 
 '''
@@ -24,6 +25,7 @@ API_KEY = os.environ['API_KEY']
 
 restList = []
 restList3 = None
+
 
 @app.route('/', methods= ['GET'])
 def geo():
@@ -40,6 +42,12 @@ def restTypeMethod():
     global rest
     rest = request.get_json()
     return rest
+
+@app.route('/foodtype', methods=['GET','POST'])
+def foodTypeMethod():
+    global foodtype
+    foodtype = request.get_json()
+    return foodtype
 
 
 @app.route('/restaurant/<string:id>', methods=['GET'])
@@ -61,11 +69,21 @@ def getdata():
     print("getdata called")
     api = Yelp
     global data
+    #print(data)
     lat = data['location']['lat']
     lng = data['location']['lng']
     global rest
-    print(rest['restType'])
-    dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
+
+    if rest is not None:
+        print("REST TYPE IS NOT NONE")
+        dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
+    else:
+        print("FOODTYPE")
+        dataFromApi =api.search_nearby_for_type(50,lat,lng,foodtype['foodType'])
+
+
+    rest = None
+    #print(dataFromApi)
     json.dumps(dataFromApi)
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
