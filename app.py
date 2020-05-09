@@ -25,8 +25,6 @@ app.debug = True
 API_KEY = os.environ['API_KEY']
 
 restList = []
-restList3 = None
-
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -39,18 +37,23 @@ def geo():
 @app.route('/findlocation', methods=['GET','POST'])
 def postmethod():
     global data
+    data = None
     data = request.get_json()
     return data
 
 @app.route('/rest', methods=['GET','POST'])
 def restTypeMethod():
     global rest
+    global foodtype
+    foodtype = None
     rest = request.get_json()
     return rest
 
 @app.route('/foodtype', methods=['GET','POST'])
 def foodTypeMethod():
     global foodtype
+    global rest
+    rest = None
     foodtype = request.get_json()
     return foodtype
 
@@ -79,12 +82,16 @@ def getdata():
     lng = data['location']['lng']
     global rest
 
+    print("REST AND FOODTYPE NEXT")
+    print(rest)
+    print(foodtype)
     if rest is not None:
-        print("REST TYPE IS NOT NONE")
+        print("restType is",rest)
         dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
-    else:
-        print("FOODTYPE")
-        dataFromApi =api.search_nearby_for_type(50,lat,lng,foodtype['foodType'])
+    elif rest is None:
+        print("restType is",rest)
+        print("Food type is ",foodtype)
+        dataFromApi = api.search_nearby_for_type(50,lat,lng,foodtype['foodType'])
 
 
     rest = None
