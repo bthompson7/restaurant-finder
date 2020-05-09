@@ -4,7 +4,7 @@
 <head>
     <title>Restaurant  Finder</title>
     <meta charset="utf-8">
-    
+
     <!-- jQuery/Bootstrap stuff -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -13,14 +13,15 @@
 </head>
 
 <body>
-    <h1>Nearby Restaurants:</h1>
-    <button data-placement="top" title="Find restaurants that serve breakfast" type="button" class="btn btn-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
-    <button data-placement="top" title="Find restaurants that serve lunch" type="button" class="btn btn-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
-    <button data-placement="top" title="Find restaurants that serve dinner" type="button" class="btn btn-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+    <h1>Find Nearby Restaurants</h1>
+    <button title="Find restaurants that serve breakfast" type="button" class="btn btn-primary" id="breakfastBtn" onClick="changeRestType('breakfast')">Breakfast</button>
+    <button title="Find restaurants that serve lunch" type="button" class="btn btn-primary" id="lunchBtn" onClick="changeRestType('lunch')">Lunch</button>
+    <button  title="Find restaurants that serve dinner" type="button" class="btn btn-primary" id="dinnerBtn" onClick="changeRestType('dinner')">Dinner</button>
+
 
     <div class="dropdown">
-        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Specific Food Type
+        <button data-placement="top" class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Specific Restaurant Type
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
           <button class="dropdown-item" type="button" onClick="changeFoodType('pizza')">Pizza</button>
@@ -28,31 +29,25 @@
           <button class="dropdown-item" type="button" onClick="changeFoodType('chinese')">Chinese</button>
           <button class="dropdown-item" type="button" onClick="changeFoodType('coffee')">Coffee</button>
           <button class="dropdown-item" type="button" onClick="changeFoodType('breweries')">Breweries</button>
+          <button class="dropdown-item" type="button" onClick="changeFoodType('bars')">Bars</button>
           <button class="dropdown-item" type="button" onClick="changeFoodType('comfortfood')">Comfort Food</button>
         </div>
       </div>
-<!--
 
-coffee
-pizza
-comfortfood
-breweries
-italian
-chinese
--->
+
     <div id="restTypeInfo" class="alert alert-primary" role="alert">
-        This is a primary alert—check it out!
       </div>
     <div id="info"></div>
     <div id="spinner" class="spinner-border"></div>
     <div id="spinner-msg"><p>Finding restaurants nearby...</p></div>
     
+    <a id="back-to-top" href="#" class="btn btn-light btn-lg back-to-top" role="button"><i class="fas fa-chevron-up"></i></a>
 
     <script>
     var spinner = document.getElementById("spinner");
     var spinnerMsg = document.getElementById("spinner-msg");
     var numOfResults = 0;
-    var testURL = "https://findarestaurantnearme.herokuapp.com/"; //http://localhost:5000/
+    var testURL = "http://localhost:5000/"; //http://localhost:5000/  https://findarestaurantnearme.herokuapp.com/
     changeRestType("lunch");
     if(navigator.geolocation) {
        console.log("navigator.geolocation is available");
@@ -73,7 +68,6 @@ chinese
                 lng: position.coords.longitude
             };
 
-            //
             $.ajax({
                 type: "POST",
                 url: testURL + "findlocation",
@@ -98,8 +92,9 @@ chinese
 
                     rest = response
                     var numOfResults = rest.length;
-                    console.log("Got " + numOfResults + "results");
+                    console.log("Got " + numOfResults + " results");
 
+                    console.log(rest[0]);
                     for(var i = 0; i < numOfResults; i++){  
                         //parse data
                        var restID = rest[i]['id'];
@@ -209,6 +204,7 @@ console.log(displayData2);
 document.getElementById('restTypeInfo').innerHTML = "Currently displaying restaurants that serve " + type;
 
 }
+
     </script>
 </body>
 </html>

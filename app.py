@@ -9,8 +9,9 @@ Requirements:
     
   Other:
      1. Click on map icon to bring up dialog box about restaurant - done
-     2. Details for restaurant 
-     3. Search by type pizza,sushi...
+     2. Details for restaurant - done
+     3. Search by type pizza,sushi etc... - done
+     4. Scroll to top button
      
 
 '''
@@ -26,6 +27,10 @@ API_KEY = os.environ['API_KEY']
 restList = []
 restList3 = None
 
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 @app.route('/', methods= ['GET'])
 def geo():

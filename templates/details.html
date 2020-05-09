@@ -11,41 +11,34 @@
 <h1>{{dataFromApi['name']}}</h1>
 <hr>
 
-
-
 {% if restHasHoursListed is sameas true %}
      {% if dataFromApi['hours'][0]['is_open_now'] is sameas true%}
-     <div class="alert alert-info" role="alert">{{dataFromApi['name']}} is currently open!</div>
+     <div class="alert alert-success" role="alert"><b>{{dataFromApi['name']}} is currently open until {{dataFromApi['hours'][0]['open'][0]['end']}}</b></div>
      {%else%}
-     <div class="alert alert-info" role="alert">{{dataFromApi['name']}} is currently closed!</div>
+     <div class="alert alert-danger" role="alert">{{dataFromApi['name']}} is currently closed!</div>
 
      {%endif%}
 {%else%}
 <div class="alert alert-danger" role="alert">This restaurant doesn't have business hours on yelp</div>
-
 {%endif%}
-<h2>{{dataFromApi['rating']}} out of 5 stars</h2>
-<h2>{{dataFromApi['review_count']}} Reviews </h2>
-<h2>Price: {{dataFromApi['price']}}</h2>
-<h2>Phone: {{dataFromApi['display_phone']}}</h2>
-<h2>Location: {{dataFromApi['location']['display_address'][0]}} {{dataFromApi['location']['display_address'][1]}}</h2>
+
+<h2><b>Rating:</b> {{dataFromApi['rating']}}/5 stars with {{dataFromApi['review_count']}} reviews  </h2>
+<h2><b>Price: </b>{{dataFromApi['price']}}</h2>
+<h2><b>Phone:</b> {{dataFromApi['display_phone']}}</h2>
+<h2><b>Location:</b> {{dataFromApi['location']['display_address'][0]}} {{dataFromApi['location']['display_address'][1]}}</h2>
+<h2><b>Hours:</b> {{dataFromApi['hours'][0]['open'][0]['start']}} until {{dataFromApi['hours'][0]['open'][0]['end']}}</h2>
 
 
 
 
 <div id="Map" style="height:300px"></div>
-
-
-
-
-
-<div><a target="_blank"  class="btn btn-primary" role="button" href="https://www.yelp.com/menu/{{dataFromApi['alias']}}">View Menu</a>
+<div><a target="_blank"  class="btn btn-primary" role="button" href="https://www.yelp.com/biz/{{dataFromApi['alias']}}">View On Yelp</a>
 </div>
-<button class="btn btn-primary" onclick="showPhotos()">Show Photos</button>
+<button class="btn btn-primary" onclick="showPhotos()">View Photos</button>
 
 <div id="restPhotos">
     {% for i in dataFromApi["photos"] %}
-    <h1>Photo:</h1>
+    <h1></h1>
     <img src={{i}} class="img-fluid" alt="Responsive image">
     <br>
     {% endfor %}
@@ -54,7 +47,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
 <script>
-
+console.log("{{dataFromApi}}")
 //code for photos
 var x = document.getElementById("restPhotos");
 x.style.display = "none";
