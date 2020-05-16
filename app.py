@@ -82,18 +82,20 @@ def getdata():
     lng = data['location']['lng']
     global rest
 
-    print("REST AND FOODTYPE NEXT")
-    print(rest)
-    print(foodtype)
     if rest is not None:
-        print("restType is",rest)
-        dataFromApi = api.search_nearby(50,rest['restType'],lat,lng)
+        print("Rest is not None")
+        restType = str(rest['restType'])
+        print("restType is",restType)
+        dataFromApi = api.search_nearby(50,restType,lat,lng)
     elif rest is None:
         print("restType is",rest)
         print("Food type is ",foodtype)
-        dataFromApi = api.search_nearby_for_type(50,lat,lng,foodtype['foodType'])
+        food = str(foodtype['foodType'])
+        dataFromApi = api.search_nearby_for_type(50,lat,lng,food)
+        print("Rest is None")
+        
 
-
+    #print(dataFromApi)
     rest = None
     #print(dataFromApi)
     json.dumps(dataFromApi)
