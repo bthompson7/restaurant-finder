@@ -24,35 +24,40 @@ app = Flask(__name__)
 app.debug = True
 API_KEY = os.environ['API_KEY']
 
+print("Starting")
 restList = []
+data = None
+foodtype = None
+rest = None
 
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template('404.html')
 
 @app.route('/', methods= ['GET'])
-def geo():
+def main():
     return render_template('index.html')
     
 @app.route('/findlocation', methods=['GET','POST'])
 def postmethod():
     global data
-    data = None
     data = request.get_json()
+    print("/findlocation called")
+    print(data)
     return data
 
 @app.route('/rest', methods=['GET','POST'])
 def restTypeMethod():
-    global rest
-    global foodtype
+    print("/rest called")
+    global foodtype,rest
     foodtype = None
     rest = request.get_json()
     return rest
 
 @app.route('/foodtype', methods=['GET','POST'])
 def foodTypeMethod():
-    global foodtype
-    global rest
+    print("/foodtype called")
+    global foodtype,rest
     rest = None
     foodtype = request.get_json()
     return foodtype
@@ -76,12 +81,11 @@ def displayRestaurantDetails(id):
 def getdata():
     print("getdata called")
     api = Yelp
-    global data
-    #print(data)
+    global data,rest,restList
+    print("data is",data)
     lat = data['location']['lat']
     lng = data['location']['lng']
-    global rest
-
+   
     if rest is not None:
         print("Rest is not None")
         restType = str(rest['restType'])
@@ -94,10 +98,7 @@ def getdata():
         dataFromApi = api.search_nearby_for_type(50,lat,lng,food)
         print("Rest is None")
         
-
-    #print(dataFromApi)
     rest = None
-    #print(dataFromApi)
     json.dumps(dataFromApi)
     restList = []
     for nearby_restaurant in dataFromApi['businesses']:
