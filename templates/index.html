@@ -57,8 +57,8 @@
          });  
     }
     changeRestType('lunch');
-    
-    function initListOfRestaurants() {
+
+    function initListOfRestaurants(restData,type) {
 
         var list = document.createElement('ul');
         list.className = "list-group";
@@ -70,38 +70,19 @@
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            //https://stackoverflow.com/questions/17006359/how-do-i-execute-ajax-success-callbacks-in-an-order
-            var req1 = $.ajax({
+
+            $.ajax({
                 type: "POST",
-                url: testURL + "findlocation",
-                contentType: "application/json",
-                data: JSON.stringify({location: pos}),
-                dataType: "json",
-                success: function(response) {
-                    console.log(response);
-                },
-                error: function(err) {
-                    console.log(err);
-                }
-                
-            }).done(function () {
-    alert('You should always see this message first.');
-
-            });
-
-
-            var req2 = $.ajax({
-                type: "GET",
                 url:  testURL + "getdata",
                 contentType: "application/json",
+                data: JSON.stringify({location: pos,data:restData,type:type}),
                 dataType: "json",
                 success: function(response) {
 
                     rest = response
                     var numOfResults = rest.length;
                     console.log("Got " + numOfResults + " results");
-
-                    console.log(rest[0]);
+                    
                     for(var i = 0; i < numOfResults; i++){  
                         //parse data
                        var restID = rest[i]['id'];
@@ -147,20 +128,11 @@
                 }
                 
             });
-            //Here
-            $.when(req1, req2)
-    .done(function () {
-        alert('And this next.');
-            });
-            
             });
             
         } else {
             console.log("Geolocation failed");
         }
-
-
-        
       return list;
     }
 
@@ -170,23 +142,7 @@ function changeFoodType(cat){
     spinner.style.visibility = "visible";
     spinnerMsg.style.visibility = "visible";
 
-    $.ajax({
-            type: "POST",
-            url: testURL + "foodtype",
-            contentType: "application/json",
-            data: JSON.stringify({foodType: cat}),
-            dataType: "json",
-             success: function(response) {
-                console.log(response);
-
-            },
-            error: function(err) {
-                console.log(err);
-
-            }
-        });
-
-var displayData2 = initListOfRestaurants();
+var displayData2 = initListOfRestaurants(cat,"food");
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
 console.log(displayData2);
@@ -200,22 +156,7 @@ function changeRestType(type){
     spinner.style.visibility = "visible";
     spinnerMsg.style.visibility = "visible";
 
-$.ajax({
-            type: "POST",
-            url: testURL + "rest",
-            contentType: "application/json",
-            data: JSON.stringify({restType: type}),
-            dataType: "json",
-             success: function(response) {
-                console.log(response);
-
-            },
-            error: function(err) {
-                console.log(err);
-            }
-        });
-
-var displayData2 = initListOfRestaurants();
+var displayData2 = initListOfRestaurants(type,"rest");
 document.getElementById('info').innerHTML = "";
 document.getElementById('info').appendChild(displayData2);
 console.log(displayData2);
