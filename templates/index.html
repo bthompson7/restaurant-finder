@@ -49,15 +49,17 @@
     var spinnerMsg = document.getElementById("spinner-msg");
     var numOfResults = 0;
     var testURL = "https://findarestaurantnearme.herokuapp.com/"; //http://localhost:5000/  https://findarestaurantnearme.herokuapp.com/
-    changeRestType("lunch");
+    
     if(navigator.geolocation) {
        console.log("navigator.geolocation is available");
        navigator.geolocation.getCurrentPosition(function(position) {
        console.log("current position acquired");
          });  
     }
-
+    changeRestType('lunch');
+    
     function initListOfRestaurants() {
+
         var list = document.createElement('ul');
         list.className = "list-group";
         console.log(navigator.geolocation);
@@ -69,8 +71,7 @@
                 lng: position.coords.longitude
             };
             //https://stackoverflow.com/questions/17006359/how-do-i-execute-ajax-success-callbacks-in-an-order
-            //semaphore in app.py
-            $.ajax({
+            var req1 = $.ajax({
                 type: "POST",
                 url: testURL + "findlocation",
                 contentType: "application/json",
@@ -82,10 +83,14 @@
                 error: function(err) {
                     console.log(err);
                 }
+                
+            }).done(function () {
+    alert('You should always see this message first.');
+
             });
 
 
-            $.ajax({
+            var req2 = $.ajax({
                 type: "GET",
                 url:  testURL + "getdata",
                 contentType: "application/json",
@@ -134,18 +139,29 @@
                     spinnerMsg.style.visibility = 'hidden';
                      spinner.style.visibility = 'hidden';
                      console.log(spinner.style.visibility);
+
+                     
                 },
                 error: function(err) {
                     console.log(err);
                 }
+                
             });
-            }, function() {
+            //Here
+            $.when(req1, req2)
+    .done(function () {
+        alert('And this next.');
             });
+            
+            });
+            
         } else {
             console.log("Geolocation failed");
         }
 
-return list;
+
+        
+      return list;
     }
 
 
@@ -205,7 +221,7 @@ document.getElementById('info').appendChild(displayData2);
 console.log(displayData2);
 document.getElementById('restTypeInfo').innerHTML = "Currently displaying restaurants that serve " + type;
 
-}
+    }
 
     </script>
 </body>
