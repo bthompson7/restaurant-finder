@@ -17,6 +17,7 @@ Requirements:
 '''
 
 import time,os,json
+import threading
 from apicall import Yelp
 from flask import Flask,render_template, jsonify,request,Response
 
@@ -29,6 +30,8 @@ restList = []
 data = None
 foodtype = None
 rest = None
+sem = threading.Semaphore()
+
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -40,31 +43,39 @@ def main():
     
 @app.route('/findlocation', methods=['GET','POST'])
 def postmethod():
+    sem.acquire()
     global data
     data = request.get_json()
     print("/findlocation called")
     print(data)
+    sem.release()
     return data
 
 @app.route('/rest', methods=['GET','POST'])
 def restTypeMethod():
+    sem.acquire()
     print("/rest called")
     global foodtype,rest
     foodtype = None
     rest = request.get_json()
+    print(rest)
+    sem.release()
     return rest
 
 @app.route('/foodtype', methods=['GET','POST'])
 def foodTypeMethod():
+    sem.acquire()
     print("/foodtype called")
     global foodtype,rest
     rest = None
     foodtype = request.get_json()
+    sem.release()
     return foodtype
 
 
 @app.route('/restaurant/<string:id>', methods=['GET'])
 def displayRestaurantDetails(id):
+    sem.acquire()
     someData = id
     api = Yelp
     dataFromApi = api.search_by_id(id)
@@ -74,11 +85,13 @@ def displayRestaurantDetails(id):
     except:
         restHasHoursListed = False
     print(dataFromApi)
+    sem.release()
     return render_template('details.html',**locals())
 
 
 @app.route('/getdata', methods=['GET'])
 def getdata():
+    sem.acquire()
     print("getdata called")
     api = Yelp
     global data,rest,restList
@@ -88,13 +101,13 @@ def getdata():
    
     if rest is not None:
         print("Rest is not None")
-        restType = str(rest['restType'])
+        restType = rest['restType']
         print("restType is",restType)
         dataFromApi = api.search_nearby(50,restType,lat,lng)
     elif rest is None:
         print("restType is",rest)
         print("Food type is ",foodtype)
-        food = str(foodtype['foodType'])
+        food = foodtype['foodType']
         dataFromApi = api.search_nearby_for_type(50,lat,lng,food)
         print("Rest is None")
         
@@ -106,6 +119,7 @@ def getdata():
     
     response = Response(json.dumps(restList),  mimetype='application/json')
     print(response) 
+    sem.release()
     return response
 
 if __name__ == '__main__':
