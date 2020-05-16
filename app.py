@@ -27,9 +27,7 @@ API_KEY = os.environ['API_KEY']
 
 print("Starting")
 restList = []
-data = None
-foodtype = None
-rest = 'lunch'
+
 
 
 @app.errorhandler(404)
